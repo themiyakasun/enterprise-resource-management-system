@@ -25,12 +25,10 @@ const addUser = async (req, res) => {
       tenantId,
     });
 
-    return res
-      .status(201)
-      .json({
-        message: 'User created successfully',
-        user: { id: newUser.id, name: newUser.name, email: newUser.email },
-      });
+    return res.status(201).json({
+      message: 'User created successfully',
+      user: { id: newUser.id, name: newUser.name, email: newUser.email },
+    });
   } catch (error) {
     return res.status(500).json({ message: 'Server error', error: error });
   }
@@ -71,7 +69,24 @@ const login = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const existingUser = await User.findByPk(id);
+    if (!existingUser)
+      return res.status(404).json({ message: 'User cannot be found' });
+
+    await User.distroy({ where: { id } });
+
+    return res.status(201).json({ message: 'User successfully deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 module.exports = {
   addUser,
   login,
+  deleteUser,
 };

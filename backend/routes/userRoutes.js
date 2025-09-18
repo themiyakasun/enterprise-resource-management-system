@@ -1,6 +1,10 @@
 const express = require('express');
 
-const { addUser, login } = require('../controllers/userController.js');
+const {
+  addUser,
+  login,
+  deleteUser,
+} = require('../controllers/userController.js');
 const authMiddleware = require('../middlewares/authMiddleware.js');
 const checkPermission = require('../middlewares/checkPermission.js');
 
@@ -13,5 +17,11 @@ router.post(
   addUser
 );
 router.post('/login', login);
+router.delete(
+  '/:id',
+  authMiddleware,
+  checkPermission('users', 'delete'),
+  deleteUser
+);
 
 module.exports = router;
