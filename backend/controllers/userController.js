@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const { Tenant, User } = require('../models');
 
 const addUser = async (req, res) => {
-  const { name, email, password, tenantId } = req.body;
+  const { name, email, password } = req.body;
+  const tenantId = req.user.tenantId;
 
   try {
     const tenant = await Tenant.findByPk(tenantId);
