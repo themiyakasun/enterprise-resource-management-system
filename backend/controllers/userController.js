@@ -27,7 +27,10 @@ const addUser = async (req, res) => {
 
     return res
       .status(201)
-      .json({ message: 'User created successfully', user: newUser });
+      .json({
+        message: 'User created successfully',
+        user: { id: newUser.id, name: newUser.name, email: newUser.email },
+      });
   } catch (error) {
     return res.status(500).json({ message: 'Server error', error: error });
   }
@@ -41,7 +44,6 @@ const login = async (req, res) => {
       include: ['roles', 'permissions', 'tenant'],
     });
 
-    console.log(existingUser);
     if (!existingUser)
       return res.status(404).json({ message: 'User not found for the email' });
 
